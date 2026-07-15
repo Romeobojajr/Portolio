@@ -3023,10 +3023,17 @@
     contactForm.addEventListener('submit', async function(e) {
         e.preventDefault(); // Prevent default form submission
 
-        if (!contactForm.checkValidity()) {
-            contactForm.reportValidity();
-            return;
-        }
+        const email = document.getElementById('email').value.trim();
+
+// Require a domain like .com, .net, .org, etc.
+const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+
+if (!emailRegex.test(email)) {
+    formStatus.textContent = '✗ Please enter a valid email address (example: sample@gmail.com)';
+    formStatus.className = 'form-status error';
+    formStatus.style.display = 'block';
+    return;
+}
 
                 // Prevent duplicate submissions
                 if (submitBtn.disabled) return;
