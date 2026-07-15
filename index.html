@@ -3023,18 +3023,19 @@
     contactForm.addEventListener('submit', async function(e) {
         e.preventDefault(); // Prevent default form submission
 
-        const email = document.getElementById('email').value.trim();
+        const emailInput = document.getElementById('email');
 
-// Require a domain like .com, .net, .org, etc.
+// Clear any previous custom message
+emailInput.setCustomValidity('');
+
+// Check our own email format
 const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
 
-if (!emailRegex.test(email)) {
-    formStatus.textContent = '✗ Please enter a valid email address (example: romeobojajr@gmail.com)';
-    formStatus.className = 'form-status error';
-    formStatus.style.display = 'block';
-    submitBtn.disabled = false;
-    btnText.style.display = 'inline-flex';
-    btnLoading.style.display = 'none';
+if (!emailRegex.test(emailInput.value.trim())) {
+    emailInput.setCustomValidity(
+        'Please enter a valid email address (example: romeobojajr@gmail.com)'
+    );
+    emailInput.reportValidity();
     return;
 }
 // Hide any previous error message
