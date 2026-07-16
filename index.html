@@ -295,23 +295,37 @@
         .contact-form { background: var(--bg-card); padding: 40px; border-radius: 15px; border: 1px solid var(--border-color); }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-secondary); }
-        .form-group input, .form-group textarea { width: 100%; padding: 12px 15px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-family: var(--font-body); font-size: 0.9rem; transition: border-color 0.3s ease; }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; padding: 12px 15px; background: var(--input-bg); border: 1px solid var(--border-color); 
+            border-radius: 8px; color: var(--text-primary); font-family: var(--font-body); font-size: 0.9rem; 
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group select {
+            appearance: none; 
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            cursor: pointer;
+        }
+        .form-group select option { background: var(--bg-card); color: var(--text-primary); }
         .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-secondary); opacity: 0.7; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
         .form-group textarea { resize: vertical; min-height: 120px; }
         
         /* Enhanced Form Button & Spinner */
         .form-btn {
             width: 100%; padding: 14px; background: var(--gold); color: #000; border: none;
-            border-radius: 8px; font-size: 0.95rem; font-weight: 500; cursor: pointer;
-            transition: all 0.3s ease; font-family: var(--font-body);
+            border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: var(--font-body);
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            position: relative; overflow: hidden;
         }
-        .form-btn:hover { transform: translateY(-2px); background: var(--gold-dark); }
-        .form-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none !important; }
+        .form-btn:hover:not(:disabled) { transform: translateY(-2px); background: var(--gold-dark); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3); }
+        .form-btn:disabled { opacity: 0.8; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
         /* ============ CONTACT FORM ENHANCEMENTS ============ */
-        .field-error { display: none; color: #f87171; font-size: 0.8rem; margin-top: 6px; padding-left: 4px; }
+        .field-error { display: none; color: #f87171; font-size: 0.8rem; margin-top: 6px; padding-left: 4px; font-weight: 500; }
         .char-count { display: block; text-align: right; font-size: 0.8rem; color: var(--text-secondary); margin-top: 6px; transition: color 0.3s ease; }
         .char-count.warning { color: #f59e0b; }
         .char-count.danger { color: #f87171; }
@@ -841,21 +855,32 @@
                             <div id="formStatus" class="form-status" role="alert" aria-live="polite"></div>
                             
                             <div class="form-group">
-                                <label for="name">Your Name</label>
+                                <label for="name">Your Name *</label>
                                 <input type="text" id="name" name="name" required placeholder="e.g., Romeo O. Boja Jr." aria-required="true">
                                 <small class="field-error" id="nameError">Please enter a valid name (2-50 characters, letters, numbers, dots, hyphens allowed).</small>
                             </div>
                             <div class="form-group">
-                                <label for="email">Your Email</label>
-                                <input type="email" id="email" name="email" required placeholder="romeobojajr@gmail.com" aria-required="true" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" title="Please enter a valid email address">
+                                <label for="email">Your Email *</label>
+                                <!-- ADDED maxlength="100" HERE -->
+                                <input type="email" id="email" name="email" required placeholder="romeobojajr@gmail.com" aria-required="true" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" title="Please enter a valid email address" maxlength="50">
                                 <small class="field-error" id="emailError">Please enter a valid email address.</small>
                             </div>
+                            
+                            <!-- Service Dropdown -->
                             <div class="form-group">
-                                <label for="subject">Subject</label>
-                                <input type="text" id="subject" name="subject" required placeholder="Project Inquiry" aria-required="true">
+                                <label for="service">Service Needed *</label>
+                                <select id="service" name="service" required aria-required="true">
+                                    <option value="" disabled selected>Select a service...</option>
+                                    <option value="Photo Project">Photo Project</option>
+                                    <option value="Video Project">Video Project</option>
+                                    <option value="Virtual Assistance">Virtual Assistance</option>
+                                    <option value="Technical Support">Technical Support</option>
+                                </select>
+                                <small class="field-error" id="serviceError">Please select a service from the dropdown.</small>
                             </div>
+
                             <div class="form-group">
-                                <label for="message">Message</label>
+                                <label for="message">Message *</label>
                                 <textarea id="message" name="message" required placeholder="Tell me about your project..." aria-required="true" maxlength="1000"></textarea>
                                 <small class="char-count" id="charCount">0 / 1000</small>
                                 <small class="field-error" id="messageError">Message must be at least 10 characters long.</small>
@@ -1141,24 +1166,30 @@
         const charCount = document.getElementById('charCount');
 
         // Validation Regex Patterns
-        // Updated to allow dots (e.g., "Romeo O. Boja Jr."), numbers, and common name characters
         const nameRegex = /^[a-zA-Z0-9À-ÿ\s'.\-]{2,50}$/;
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         if (contactForm) {
-            // AUTO-HIDE ERRORS WHEN USER STARTS TYPING
+            // 1. DISABLE BROWSER NATIVE POPUPS to prevent "dual errors"
+            contactForm.setAttribute('novalidate', 'novalidate');
+
+            // AUTO-HIDE ERRORS WHEN USER STARTS TYPING OR CHANGING
             contactForm.addEventListener('input', function(e) {
                 const target = e.target;
-                target.setCustomValidity('');
-                
-                // Hide inline field errors
                 const errorEl = document.getElementById(target.id + 'Error');
                 if (errorEl) errorEl.style.display = 'none';
                 
-                // Hide general form status error
                 if (formStatus.style.display === 'block' || formStatus.classList.contains('error')) {
                     formStatus.style.display = 'none';
                     formStatus.className = 'form-status';
+                }
+            });
+
+            // Also listen for 'change' events specifically for the dropdown
+            contactForm.addEventListener('change', function(e) {
+                if (e.target.tagName === 'SELECT') {
+                    const errorEl = document.getElementById(e.target.id + 'Error');
+                    if (errorEl) errorEl.style.display = 'none';
                 }
             });
 
@@ -1167,12 +1198,10 @@
                 const currentLength = this.value.length;
                 charCount.textContent = `${currentLength} / 1000`;
                 
-                // Visual feedback as limit approaches
                 charCount.className = 'char-count';
                 if (currentLength > 900) charCount.classList.add('danger');
                 else if (currentLength > 750) charCount.classList.add('warning');
                 
-                // Hide message error if typing
                 const messageErrorEl = document.getElementById('messageError');
                 if (messageErrorEl) messageErrorEl.style.display = 'none';
             });
@@ -1183,46 +1212,50 @@
 
                 const nameInput = document.getElementById('name');
                 const emailInput = document.getElementById('email');
-                const subjectInput = document.getElementById('subject');
+                const serviceInput = document.getElementById('service');
 
                 let isValid = true;
+                let firstInvalidField = null;
+
+                // Helper function to handle error display and focus tracking cleanly
+                const validateField = (input, isInvalid, errorId) => {
+                    const errorEl = document.getElementById(errorId);
+                    if (isInvalid) {
+                        if (errorEl) errorEl.style.display = 'block';
+                        if (!firstInvalidField) firstInvalidField = input;
+                        return false;
+                    } else {
+                        if (errorEl) errorEl.style.display = 'none';
+                        return true;
+                    }
+                };
 
                 // 1. VALIDATE NAME FIELD
-                if (!nameRegex.test(nameInput.value.trim())) {
-                    nameInput.setCustomValidity('Please enter a valid name (2-50 characters, letters, numbers, dots, hyphens allowed).');
-                    document.getElementById('nameError').style.display = 'block';
-                    isValid = false;
-                }
+                if (!validateField(nameInput, !nameRegex.test(nameInput.value.trim()), 'nameError')) isValid = false;
 
                 // 2. VALIDATE EMAIL FIELD
-                if (!emailRegex.test(emailInput.value.trim())) {
-                    emailInput.setCustomValidity('Please enter a valid email address.');
-                    document.getElementById('emailError').style.display = 'block';
-                    isValid = false;
-                }
+                if (!validateField(emailInput, !emailRegex.test(emailInput.value.trim()), 'emailError')) isValid = false;
 
-                // 3. VALIDATE SUBJECT FIELD
-                if (subjectInput.value.trim().length < 3) {
-                    subjectInput.setCustomValidity('Subject must be at least 3 characters long.');
-                    isValid = false;
-                }
+                // 3. VALIDATE SERVICE DROPDOWN
+                if (!validateField(serviceInput, serviceInput.value === '', 'serviceError')) isValid = false;
 
                 // 4. VALIDATE MESSAGE LENGTH
-                if (messageInput.value.trim().length < 10) {
-                    messageInput.setCustomValidity('Message must be at least 10 characters long.');
-                    document.getElementById('messageError').style.display = 'block';
-                    isValid = false;
-                }
+                if (!validateField(messageInput, messageInput.value.trim().length < 10, 'messageError')) isValid = false;
 
                 if (!isValid) {
-                    contactForm.reportValidity(); // Triggers browser's accessible focus management
-                    return;
+                    // Focus the first invalid field for better UX (replaces browser's default behavior)
+                    if (firstInvalidField) {
+                        firstInvalidField.focus();
+                        // Smooth scroll to the error on mobile
+                        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return; // Stop submission WITHOUT triggering any browser popup
                 }
 
                 // PREVENT DOUBLE-CLICK SUBMISSIONS
                 if (submitBtn.disabled) return;
 
-                // SHOW LOADING STATE
+                // SHOW PRO LOADING STATE
                 submitBtn.disabled = true;
                 btnText.style.display = 'none';
                 btnLoading.style.display = 'inline-flex';
@@ -1243,7 +1276,7 @@
                     if (contentType && contentType.includes("application/json")) {
                         responseData = await response.json();
                     } else {
-                        // Fallback: if it's not JSON (e.g., redirected to _next URL), but response is OK, treat as success.
+                        // Fallback: if it's not JSON but response is OK, treat as success.
                         if (response.ok) {
                             responseData = { success: true };
                         } else {
