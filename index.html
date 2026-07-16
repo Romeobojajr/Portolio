@@ -897,13 +897,9 @@
                     </div>
 
                     <div class="contact-form fade-in">
-                        <form id="contactForm" action="https://formsubmit.co/el/vujale" method="POST" aria-label="Contact Form" novalidate>
-                            <input type="hidden" name="_captcha" value="false">
-                            <!-- SECURITY FIX: Honeypot field added to silently trap spam bots -->
-                            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-                            <input type="hidden" name="_template" value="table">
-                            <input type="hidden" name="_subject" value="New Portfolio Contact Message">
-                            <input type="hidden" name="_next" value="https://romeobojajr.github.io/Portfolio/">
+                        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" aria-label="Contact Form" novalidate>
+                        <input type="hidden" name="access_key" value="1f7ba558-accb-45ab-9545-5ce77aa93c26">
+                        <input type="hidden" name="subject" value="New Portfolio Contact Message">
                             
                             <div id="formStatus" class="form-status" role="alert" aria-live="polite"></div>
                             
@@ -1316,13 +1312,11 @@
                 let response;
 
                 try {
-                    // FIX: Corrected AJAX endpoint format (removed '/el/' which was causing 404 errors)
-                    response = await fetch('https://formsubmit.co/ajax/vujale', {
+                    response = await fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
                         body: formData,
                         headers: { 'Accept': 'application/json' }
                     });
-
                     const responseData = await response.json();
 
                     if (response.ok && responseData.success) {
