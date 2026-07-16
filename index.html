@@ -13,6 +13,7 @@
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://romeobojajr.github.io/Portfolio/">
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://romeobojajr.github.io/Portfolio/">
@@ -28,6 +29,9 @@
     <meta property="twitter:title" content="Romeo O. Boja Jr. | IT Support Specialist & Digital Creator">
     <meta property="twitter:description" content="IT Support Specialist with 7+ years of experience, Virtual Assistant, and Photo/Video Editor. Providing reliable technical support and high-quality digital content.">
     <meta property="twitter:image" content="https://romeobojajr.github.io/Portfolio/assets/image/preview.jpg">
+
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https:; connect-src 'self' https://formsubmit.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co;">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGCQAAAABQABh6FO1AAAAABJRU5ErkJggg==">
@@ -359,6 +363,16 @@
         }
         .success-modal-btn:hover { background: var(--gold-dark); transform: translateY(-2px); }
 
+        /* Tech Stack Marquee */
+        .tech-stack { background: var(--bg-primary); padding: 40px 0; overflow: hidden; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .tech-stack-title { text-align: center; font-family: var(--font-heading); font-size: 1.2rem; color: var(--gold); margin-bottom: 30px; font-weight: var(--heading-weight); }
+        .marquee-wrapper { display: flex; overflow: hidden; }
+        .marquee-content { display: flex; gap: 60px; animation: scroll 30s linear infinite; }
+        .marquee-content:hover { animation-play-state: paused; }
+        .tech-item { display: flex; align-items: center; gap: 10px; white-space: nowrap; color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; }
+        .tech-item i { color: var(--gold); font-size: 1.5rem; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
         footer { background: var(--bg-secondary); padding: 40px 30px; text-align: center; border-top: 1px solid var(--border-color); }
         .footer-social { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
         .footer-social a { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--bg-card); color: var(--gold); text-decoration: none; border: 1px solid var(--border-color); transition: all 0.3s ease; }
@@ -446,11 +460,47 @@
                 <p class="hero-description">I have over 7 years of IT Support experience, including 3 years providing remote and on-site technical support. I also provide photo editing, video editing, and virtual assistant services, helping businesses and content creators with reliable technical support and high-quality digital content.</p>
                 <div class="hero-buttons">
                     <a href="#portfolio" class="btn btn-primary magnetic-btn"><i class="fas fa-play"></i> View My Work</a>
-                    <a href="https://drive.google.com/uc?export=download&id=1Zqasdkd0YpWTynekbF_c9VgN8WIjjZPT" class="btn btn-secondary magnetic-btn" download aria-label="Download Resume"><i class="fas fa-download"></i> Download Resume</a>
+                    <a href="assets/romeo-boja-resume.pdf" class="btn btn-secondary magnetic-btn" download aria-label="Download Resume"><i class="fas fa-download"></i> Download Resume</a>
                     <a href="#contact" class="btn btn-secondary magnetic-btn"><i class="fas fa-envelope"></i> Hire Me</a>
                 </div>
             </div>
             <div class="scroll-indicator" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+        </section>
+
+        <!-- Tech Stack Marquee -->
+        <section class="tech-stack" aria-label="Technology Stack">
+            <h2 class="tech-stack-title">Tools & Technologies I Work With</h2>
+            <div class="marquee-wrapper">
+                <div class="marquee-content">
+                    <div class="tech-item"><i class="fas fa-headset"></i><span>IT Support</span></div>
+                    <div class="tech-item"><i class="fab fa-microsoft"></i><span>Microsoft 365</span></div>
+                    <div class="tech-item"><i class="fab fa-google"></i><span>Google Workspace</span></div>
+                    <div class="tech-item"><i class="fab fa-windows"></i><span>Windows 10/11</span></div>
+                    <div class="tech-item"><i class="fas fa-network-wired"></i><span>Networking</span></div>
+                    <div class="tech-item"><i class="fas fa-shield-alt"></i><span>CCTV Hikvision</span></div>
+                    <div class="tech-item"><i class="fas fa-cash-register"></i><span>POS Systems</span></div>
+                    <div class="tech-item"><i class="fas fa-desktop"></i><span>Remote Desktop</span></div>
+                    <div class="tech-item"><i class="fas fa-image"></i><span>Adobe Photoshop</span></div>
+                    <div class="tech-item"><i class="fas fa-film"></i><span>CapCut Pro</span></div>
+                    <div class="tech-item"><i class="fas fa-video"></i><span>Filmora</span></div>
+                    <div class="tech-item"><i class="fas fa-magic"></i><span>AI Tools</span></div>
+                    <div class="tech-item"><i class="fas fa-user-tie"></i><span>Virtual Assistance</span></div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="tech-item"><i class="fas fa-headset"></i><span>IT Support</span></div>
+                    <div class="tech-item"><i class="fab fa-microsoft"></i><span>Microsoft 365</span></div>
+                    <div class="tech-item"><i class="fab fa-google"></i><span>Google Workspace</span></div>
+                    <div class="tech-item"><i class="fab fa-windows"></i><span>Windows 10/11</span></div>
+                    <div class="tech-item"><i class="fas fa-network-wired"></i><span>Networking</span></div>
+                    <div class="tech-item"><i class="fas fa-shield-alt"></i><span>CCTV Hikvision</span></div>
+                    <div class="tech-item"><i class="fas fa-cash-register"></i><span>POS Systems</span></div>
+                    <div class="tech-item"><i class="fas fa-desktop"></i><span>Remote Desktop</span></div>
+                    <div class="tech-item"><i class="fas fa-image"></i><span>Adobe Photoshop</span></div>
+                    <div class="tech-item"><i class="fas fa-film"></i><span>CapCut Pro</span></div>
+                    <div class="tech-item"><i class="fas fa-video"></i><span>Filmora</span></div>
+                    <div class="tech-item"><i class="fas fa-magic"></i><span>AI Tools</span></div>
+                    <div class="tech-item"><i class="fas fa-user-tie"></i><span>Virtual Assistance</span></div>
+                </div>
+            </div>
         </section>
 
         <!-- Stats Section -->
@@ -826,13 +876,13 @@
                         <h3>Let's Work on Your Project</h3>
                         <p>If you need help with IT support, virtual assistance, or photo/video editing, feel free to reach out. I'm available for freelance work and happy to discuss your project needs. You can contact me through any of the platforms below, download my resume, or fill out the form.</p>
                         <div class="contact-links">
-                            <a href="https://drive.google.com/uc?export=download&id=1Zqasdkd0YpWTynekbF_c9VgN8WIjjZPT" class="contact-link" download aria-label="Download Resume">
+                            <a href="assets/romeo-boja-resume.pdf" class="contact-link" download aria-label="Download Resume">
                                 <i class="fas fa-file-download"></i>
                                 <div class="contact-link-text"><span>Resume</span><p>Download my full resume</p></div>
                             </a>
-                            <a href="mailto:romeobojajr@gmail.com" class="contact-link" aria-label="Send Email">
+                            <a href="#" class="contact-link email-link" aria-label="Send Email" data-user="romeobojajr" data-domain="gmail.com">
                                 <i class="fas fa-envelope"></i>
-                                <div class="contact-link-text"><span>Email Me</span><p>romeobojajr@gmail.com</p></div>
+                                <div class="contact-link-text"><span>Email Me</span><p id="emailDisplay">Loading...</p></div>
                             </a>
                             <a href="https://www.linkedin.com/in/romeo-boja-jr-260a8a419/" target="_blank" rel="noopener noreferrer" class="contact-link" aria-label="Visit LinkedIn Profile">
                                 <i class="fab fa-linkedin"></i>
@@ -847,7 +897,7 @@
 
                     <div class="contact-form fade-in">
                         <form id="contactForm" action="https://formsubmit.co/romeobojajr@gmail.com" method="POST" aria-label="Contact Form" novalidate>
-                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_captcha" value="true">
                             <input type="hidden" name="_template" value="table">
                             <input type="hidden" name="_subject" value="New Portfolio Contact Message">
                             <input type="hidden" name="_next" value="https://romeobojajr.github.io/Portfolio/">
@@ -861,8 +911,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">Your Email *</label>
-                                <!-- ADDED maxlength="50" HERE -->
-                                <input type="email" id="email" name="email" required placeholder="romeobojajr@gmail.com" aria-required="true" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" title="Please enter a valid email address" maxlength="50">
+                                <input type="email" id="email" name="email" required placeholder="romeobojajr@gmail.com" aria-required="true" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" title="Please enter a valid email address" maxlength="100">
                                 <small class="field-error" id="emailError">Please enter a valid email address.</small>
                             </div>
                             
@@ -898,7 +947,7 @@
 
     <footer role="contentinfo">
         <div class="footer-social">
-            <a href="mailto:romeobojajr@gmail.com" aria-label="Send Email"><i class="fas fa-envelope"></i></a>
+            <a href="#" class="email-link" aria-label="Send Email" data-user="romeobojajr" data-domain="gmail.com"><i class="fas fa-envelope"></i></a>
             <a href="https://www.linkedin.com/in/romeo-boja-jr-260a8a419/" target="_blank" rel="noopener noreferrer" aria-label="Visit LinkedIn"><i class="fab fa-linkedin"></i></a>
             <a href="https://www.onlinejobs.ph/jobseekers/info/4946464" target="_blank" rel="noopener noreferrer" aria-label="Visit OnlineJobs.ph"><i class="fas fa-briefcase"></i></a>
         </div>
@@ -921,6 +970,22 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
+        // ============ EMAIL OBFUSCATION ============
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailLinks = document.querySelectorAll('.email-link');
+            emailLinks.forEach(link => {
+                const user = link.getAttribute('data-user');
+                const domain = link.getAttribute('data-domain');
+                const email = user + '@' + domain;
+                link.href = 'mai' + 'lto:' + email;
+                
+                const display = link.querySelector('#emailDisplay');
+                if (display) {
+                    display.textContent = email;
+                }
+            });
+        });
+
         // ============ SCROLL PROGRESS BAR ============
         const scrollProgress = document.getElementById('scrollProgress');
         window.addEventListener('scroll', () => {
@@ -1302,7 +1367,7 @@
                         charCount.textContent = '0 / 1000';
                         charCount.className = 'char-count';
                     } else {
-                        formStatus.textContent = '✗ Error: ' + (error.message || 'Something went wrong. Please try again or email me directly at romeobojajr@gmail.com');
+                        formStatus.textContent = '✗ Error: ' + (error.message || 'Something went wrong. Please try again or email me directly.');
                         formStatus.className = 'form-status error';
                         formStatus.style.display = 'block';
                         
