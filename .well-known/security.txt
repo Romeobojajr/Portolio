@@ -1,0 +1,6 @@
+Contact: mailto:romeobojajr@gmail.com
+Expires: 2027-12-31T23:59:59.000Z
+Encryption: https://romeobojajr.github.io/Portfolio/pgp-key.txt
+Preferred-Languages: en
+Canonical: https://romeobojajr.github.io/Portfolio/.well-known/security.txt
+Policy: https://romeobojajr.github.io/Portfolio/security-policy.html
