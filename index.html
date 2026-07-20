@@ -197,7 +197,6 @@
         .service-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
 
         .technical-projects { background: var(--bg-secondary); }
-        /* CRITICAL: align-items: start prevents other cards in the row from stretching when one expands */
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; align-items: start; }
         
         .project-card { 
@@ -209,7 +208,6 @@
             text-align: left; 
             display: flex; 
             flex-direction: column; 
-            /* min-height is managed by JS for initial uniformity, allowing independent expansion */
         }
         
         .project-card:hover { border-color: var(--border-hover); transform: translateY(-5px); background: var(--bg-card-hover); }
@@ -217,39 +215,68 @@
         .project-card:hover > i { transform: scale(1.1); }
         .project-card h3 { font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 15px; color: var(--text-heading); font-weight: var(--heading-weight); }
         .experience-summary { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; }
-        .project-card h4 { 
-            color: var(--gold); 
-            font-size: 0.8rem; /* Matches toggle font size */
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            margin-bottom: 10px; 
-            font-family: var(--font-heading); 
-            font-weight: var(--heading-weight); 
-            display: inline; /* Keeps toggle on the same line */
-        }
         .experience-list { list-style: none; padding: 0; margin: 0 0 20px 0; }
         .experience-list li { position: relative; padding-left: 18px; margin-bottom: 8px; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
         .experience-list li::before { content: '›'; position: absolute; left: 0; color: var(--gold); font-weight: bold; font-size: 1.2rem; line-height: 1.2; }
         .project-tags { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
         .project-tags .portfolio-tag { margin-top: 0; }
 
-        /* Updated: Removed underline, matched font size to h4 (0.8rem) */
+        /* Outlined Pill Toggle with Subtle Breathing Animation (No hover gradient/shadow) */
         .responsibilities-toggle {
-            color: var(--gold-light);
+            font-family: var(--font-body);
             font-size: 0.8rem;
             font-weight: 600;
-            cursor: pointer;
-            display: inline-block;
-            margin-left: 10px;
-            transition: all 0.3s ease;
-            vertical-align: middle;
-            text-decoration: none; /* Explicitly no underline */
-        }
-        .responsibilities-toggle:hover {
             color: var(--gold);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 6px 14px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            vertical-align: middle;
+            text-decoration: none !important;
+            animation: breathe 3s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.3);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 0 8px rgba(212, 175, 55, 0);
+                transform: scale(1.02);
+            }
+        }
+        
+        .responsibilities-toggle:hover {
             background: rgba(212, 175, 55, 0.1);
-            padding: 2px 8px;
-            border-radius: 4px;
+            border-color: var(--gold);
+            color: var(--gold-light);
+            transform: translateY(-1px);
+        }
+        .responsibilities-toggle:active {
+            transform: translateY(0);
+        }
+        .responsibilities-toggle.active {
+            animation: none;
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+        .toggle-arrow {
+            display: inline-block;
+            font-size: 0.75rem;
+            line-height: 1;
+            transition: transform 0.3s ease;
+            color: var(--gold);
+        }
+        .responsibilities-toggle.active .toggle-arrow {
+            transform: rotate(90deg);
         }
         .experience-list.hidden,
         .project-tags.hidden {
@@ -263,22 +290,66 @@
         .portfolio-item { position: relative; border-radius: 15px; overflow: hidden; background: var(--bg-card); border: 1px solid var(--border-color); transition: all 0.3s ease; cursor: pointer; }
         .portfolio-item:hover { transform: translateY(-10px); border-color: var(--border-hover); }
         .portfolio-thumbnail { width: 100%; aspect-ratio: 16/9; background: var(--bg-card-hover); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .portfolio-thumbnail video.portfolio-img, .portfolio-thumbnail img.portfolio-img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 1; transition: transform 0.4s ease; }
-        .portfolio-item:hover .portfolio-thumbnail video.portfolio-img, .portfolio-item:hover .portfolio-thumbnail img.portfolio-img { transform: scale(1.05); }
+        
+        .portfolio-thumbnail video.portfolio-img, .portfolio-thumbnail img.portfolio-img { 
+            width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 1; 
+            transition: filter 0.3s ease; 
+        }
+        .portfolio-thumbnail video.portfolio-img:hover, 
+        .portfolio-thumbnail img.portfolio-img:hover,
+        .portfolio-thumbnail.blurred video.portfolio-img,
+        .portfolio-thumbnail.blurred img.portfolio-img { 
+            filter: blur(4px); 
+        }
+        
         .portfolio-thumbnail video.portfolio-img[src=""], .portfolio-thumbnail video.portfolio-img:not([src]), .portfolio-thumbnail img.portfolio-img[src=""], .portfolio-thumbnail img.portfolio-img:not([src]) { display: none; }
         .portfolio-thumbnail video.portfolio-img[src]:not([src=""]) ~ .portfolio-icon, .portfolio-thumbnail img.portfolio-img[src]:not([src=""]) ~ .portfolio-icon { display: none; }
         .portfolio-thumbnail .portfolio-icon { font-size: 3rem; color: var(--gold); opacity: 0.5; position: relative; z-index: 0; }
         .portfolio-item[data-category="photo"] .portfolio-thumbnail.photo-slider-container { aspect-ratio: auto; height: auto; min-height: 280px; overflow: hidden; }
         .photo-swiper { width: 100%; height: 100%; min-height: 280px; }
         .photo-swiper .swiper-slide { display: flex; align-items: center; justify-content: center; background: var(--bg-card-hover); overflow: hidden; }
-        .photo-swiper .swiper-slide img.slider-photo { width: 100%; height: auto; max-height: 350px; object-fit: contain; display: block; transition: transform 0.4s ease; }
-        .portfolio-item:hover .photo-swiper .swiper-slide img.slider-photo { transform: scale(1.03); }
-        .photo-swiper .swiper-button-next, .photo-swiper .swiper-button-prev { color: var(--gold); background: rgba(0, 0, 0, 0.6); width: 36px; height: 36px; border-radius: 50%; transition: all 0.3s ease; backdrop-filter: blur(4px); }
+        
+        .photo-swiper .swiper-slide img.slider-photo { 
+            width: 100%; height: auto; max-height: 350px; object-fit: contain; display: block; 
+            transition: filter 0.3s ease; 
+        }
+        .photo-swiper .swiper-slide img.slider-photo:hover,
+        .portfolio-thumbnail.blurred .photo-swiper .swiper-slide img.slider-photo { 
+            filter: blur(4px); 
+        }
+        
+        .photo-swiper .swiper-button-next, .photo-swiper .swiper-button-prev { color: var(--gold); background: rgba(0, 0, 0, 0.6); width: 36px; height: 36px; border-radius: 50%; transition: all 0.3s ease; backdrop-filter: blur(4px); z-index: 3; }
         .photo-swiper .swiper-button-next:hover, .photo-swiper .swiper-button-prev:hover { background: var(--gold); color: #000; transform: scale(1.1); }
         .photo-swiper .swiper-button-next::after, .photo-swiper .swiper-button-prev::after { font-size: 14px; font-weight: bold; }
-        .portfolio-overlay { position: absolute; inset: 0; background: rgba(212, 175, 55, 0.15); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; z-index: 2; pointer-events: none; }
-        .portfolio-item:hover .portfolio-overlay { opacity: 1; }
-        .portfolio-overlay i { font-size: 2.5rem; color: var(--gold); }
+        
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.35);
+        }
+        .portfolio-thumbnail:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        .portfolio-overlay i {
+            pointer-events: auto;
+            cursor: pointer;
+            color: var(--gold);
+            font-size: 2.5rem;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .portfolio-overlay i:hover {
+            transform: scale(1.15);
+            color: var(--gold-light);
+        }
+        
         .portfolio-info { padding: 25px; }
         .portfolio-info h3 { font-size: 1.2rem; margin-bottom: 8px; font-weight: 500; color: var(--text-heading); }
         .portfolio-info p { color: var(--text-secondary); font-size: 0.85rem; }
@@ -342,13 +413,21 @@
 
         .contact-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
         .contact-info h3 { font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 20px; color: var(--gold); font-weight: var(--heading-weight); }
-        .contact-info > p { color: var(--text-secondary); margin-bottom: 30px; line-height: 1.8; }
+        .contact-info > p { 
+            color: var(--text-secondary); 
+            margin-bottom: 30px; 
+            line-height: 1.8; 
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            max-width: 100%;
+        }
         .contact-links { display: flex; flex-direction: column; gap: 20px; }
         .contact-link { display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text-primary); padding: 15px 20px; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border-color); transition: all 0.3s ease; }
         .contact-link:hover { border-color: var(--gold); transform: translateX(5px); }
         .contact-link i { font-size: 1.3rem; color: var(--gold); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.1); border-radius: 50%; }
         .contact-link-text span { display: block; font-size: 0.8rem; color: var(--text-secondary); }
-        .contact-link-text p { font-size: 0.95rem; margin: 0; color: var(--text-primary); }
+        .contact-link-text p { font-size: 0.95rem; margin: 0; color: var(--text-primary); word-wrap: break-word; overflow-wrap: break-word; }
         .contact-form { background: var(--bg-card); padding: 40px; border-radius: 15px; border: 1px solid var(--border-color); }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-secondary); }
@@ -370,7 +449,6 @@
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
         .form-group textarea { resize: vertical; min-height: 120px; }
         
-        /* PREMIUM FORM BUTTON STYLES */
         .form-btn {
             width: 100%; 
             padding: 16px 24px; 
@@ -423,7 +501,6 @@
             box-shadow: none !important;
         }
         
-        /* Premium Loading Spinner */
         .btn-loading {
             display: inline-flex;
             align-items: center;
@@ -447,20 +524,6 @@
         .btn-text {
             font-weight: 600;
             letter-spacing: 0.5px;
-        }
-
-        /* ============ FORM VALIDATION SHAKE ============ */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        
-        .form-btn.validation-fail {
-            background: #ef4444 !important;
-            color: #ffffff !important;
-            animation: shake 0.5s ease-in-out;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4) !important;
         }
 
         .field-error { display: none; color: #f87171; font-size: 0.8rem; margin-top: 6px; padding-left: 4px; font-weight: 500; }
@@ -708,9 +771,9 @@
                     </div>
                     <div class="about-text fade-in">
                         <h3>IT Support & Digital Services</h3>
-                        <p>I have over <strong>7 years of hands-on experience in IT Support</strong>, including <strong>3 years providing both remote and on-site technical support</strong>. My experience includes troubleshooting hardware and software issues, maintaining Windows systems, and helping keep business operations running smoothly through reliable technical support.</p>
-                        <p>My technical experience includes working with <strong>Microsoft 365, Google Workspace, Windows Support, Networking, VPNs, Help Desk operations, and Remote Desktop tools</strong>. I also have hands-on experience supporting specialized systems such as <strong>Hikvision CCTV, POS systems, SQL Server Management Studio, HRIS, RFID attendance systems, and ZKTeco devices</strong>.</p>
-                        <p>Beyond IT support, I also provide creative digital services, including <strong>photo editing, video editing, and AI-powered photo restoration</strong> using <strong>Adobe Photoshop, Filmora, and CapCut Pro</strong>. I enjoy learning new technologies and continuously improving my technical and creative skills to deliver dependable IT support and high-quality digital content.</p>
+                        <p>I have over <strong>7 years of hands-on experience in IT</strong>, including <strong>3 years providing comprehensive remote and on-site support</strong>. My expertise includes troubleshooting hardware and software issues, maintaining Windows environments, and ensuring business operations run smoothly with minimal downtime.</p>
+                        <p>My technical background spans <strong>Microsoft 365, Google Workspace, Networking, VPNs, Help Desk operations, and Remote Desktop tools</strong>. I also have specialized, hands-on experience supporting systems such as <strong>Hikvision CCTV, POS terminals, SQL Server Management Studio, HRIS platforms, and ZKTeco RFID attendance devices</strong>.</p>
+                        <p>Beyond IT infrastructure, I provide creative digital services, including <strong>photo editing, video editing, and AI-powered photo restoration</strong> using <strong>Adobe Photoshop, Filmora, and CapCut Pro</strong>. I am passionate about learning new technologies and continuously refining my skills to deliver dependable solutions and high-quality digital content.</p>
                         <div class="skills-grid">
                             <div class="skill-item"><i class="fas fa-check-circle"></i><span>IT Support & Help Desk</span></div>
                             <div class="skill-item"><i class="fas fa-check-circle"></i><span>Remote & On-Site Support</span></div>
@@ -740,7 +803,7 @@
                     <div class="project-card fade-in">
                         <i class="fas fa-headset"></i><h3>Remote Technical Support</h3>
                         <p class="experience-summary">Provided remote technical support to employees and end users by diagnosing and resolving Windows, software, printer, and network-related issues using secure remote access tools.</p>
-                        <h4>Key Responsibilities <span class="responsibilities-toggle">See more...</span></h4>
+                        <h4><span class="responsibilities-toggle">Show Responsibilities <span class="toggle-arrow">›</span></span></h4>
                         <ul class="experience-list hidden">
                             <li>Provided remote assistance using RustDesk and AnyDesk</li>
                             <li>Diagnosed Windows operating system issues</li>
@@ -760,7 +823,7 @@
                     <div class="project-card fade-in">
                         <i class="fas fa-desktop"></i><h3>Windows Installation & Troubleshooting</h3>
                         <p class="experience-summary">Installed, configured, and maintained Windows desktops and laptops while troubleshooting operating system, driver, hardware, and software issues.</p>
-                        <h4>Key Responsibilities <span class="responsibilities-toggle">See more...</span></h4>
+                        <h4><span class="responsibilities-toggle">Show Responsibilities <span class="toggle-arrow">›</span></span></h4>
                         <ul class="experience-list hidden">
                             <li>Installed Windows 10 and Windows 11</li>
                             <li>Configured hardware drivers and peripherals</li>
@@ -779,7 +842,7 @@
                     <div class="project-card fade-in">
                         <i class="fas fa-cloud"></i><h3>Microsoft 365 & Google Workspace</h3>
                         <p class="experience-summary">Provided end-user support for Microsoft 365 and Google Workspace by assisting with installation, setup, basic configuration, and troubleshooting of productivity applications.</p>
-                        <h4>Key Responsibilities <span class="responsibilities-toggle">See more...</span></h4>
+                        <h4><span class="responsibilities-toggle">Show Responsibilities <span class="toggle-arrow">›</span></span></h4>
                         <ul class="experience-list hidden">
                             <li>Installed Microsoft Office applications</li>
                             <li>Configured Outlook email accounts</li>
@@ -799,7 +862,7 @@
                     <div class="project-card fade-in">
                         <i class="fas fa-ticket-alt"></i><h3>Helpdesk & End-User Support</h3>
                         <p class="experience-summary">Provided first-level technical support by responding to user requests, diagnosing technical issues, documenting solutions, and ensuring timely resolution.</p>
-                        <h4>Key Responsibilities <span class="responsibilities-toggle">See more...</span></h4>
+                        <h4><span class="responsibilities-toggle">Show Responsibilities <span class="toggle-arrow">›</span></span></h4>
                         <ul class="experience-list hidden">
                             <li>Responded to user support requests</li>
                             <li>Diagnosed technical issues</li>
@@ -817,7 +880,7 @@
                     <div class="project-card fade-in">
                         <i class="fas fa-network-wired"></i><h3>Network Installation & Troubleshooting</h3>
                         <p class="experience-summary">Installed and configured wired and wireless network devices while troubleshooting LAN/WAN connectivity, Wi-Fi, VPN connections, and network communication issues.</p>
-                        <h4>Key Responsibilities <span class="responsibilities-toggle">See more...</span></h4>
+                        <h4><span class="responsibilities-toggle">Show Responsibilities <span class="toggle-arrow">›</span></span></h4>
                         <ul class="experience-list hidden">
                             <li>Configured routers and switches</li>
                             <li>Installed wireless access points</li>
@@ -837,7 +900,7 @@
                     <div class="project-card fade-in">
                         <i class="fas fa-print"></i><h3>Printer & Peripheral Support</h3>
                         <p class="experience-summary">Installed, configured, and maintained printers, scanners, barcode scanners, and office peripherals while resolving driver, hardware, and connectivity issues.</p>
-                        <h4>Key Responsibilities <span class="responsibilities-toggle">See more...</span></h4>
+                        <h4><span class="responsibilities-toggle">Show Responsibilities <span class="toggle-arrow">›</span></span></h4>
                         <ul class="experience-list hidden">
                             <li>Installed local and network printers</li>
                             <li>Configured printer sharing</li>
@@ -857,7 +920,7 @@
                     <div class="project-card fade-in">
                         <i class="fas fa-cash-register"></i><h3>POS System & CCTV Support</h3>
                         <p class="experience-summary">Installed, configured, and provided technical support for POS systems and CCTV equipment by troubleshooting hardware, software, and basic network connectivity.</p>
-                        <h4>Key Responsibilities <span class="responsibilities-toggle">See more...</span></h4>
+                        <h4><span class="responsibilities-toggle">Show Responsibilities <span class="toggle-arrow">›</span></span></h4>
                         <ul class="experience-list hidden">
                             <li>Installed POS terminals and peripherals</li>
                             <li>Configured receipt printers</li>
@@ -877,7 +940,7 @@
                     <div class="project-card fade-in">
                         <i class="fas fa-phone-volume"></i><h3>VoIP & Business Communication</h3>
                         <p class="experience-summary">Assisted with installation, basic configuration, and troubleshooting of VoIP communication systems. Supported users by resolving connectivity and call-quality issues.</p>
-                        <h4>Key Responsibilities <span class="responsibilities-toggle">See more...</span></h4>
+                        <h4><span class="responsibilities-toggle">Show Responsibilities <span class="toggle-arrow">›</span></span></h4>
                         <ul class="experience-list hidden">
                             <li>Installed VoIP devices</li>
                             <li>Performed basic VoIP configuration</li>
@@ -1120,7 +1183,8 @@
                     </div>
 
                     <div class="contact-form fade-in">
-                        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" aria-label="Contact Form" novalidate>
+                        <!-- Native HTML5 validation enabled (no 'novalidate') -->
+                        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
                         <input type="hidden" name="access_key" value="1f7ba558-accb-45ab-9545-5ce77aa93c26">
                         <input type="hidden" name="subject" value="New Portfolio Contact Message">
                             
@@ -1128,13 +1192,11 @@
                             
                             <div class="form-group">
                                 <label for="name">Your Name *</label>
-                                <input type="text" id="name" name="name" required placeholder="e.g., Romeo" aria-required="true">
-                                <small class="field-error" id="nameError">Please enter a valid name.</small>
+                                <input type="text" id="name" name="name" required placeholder="e.g., Romeo" aria-required="true" pattern="[A-Za-z\s'\-]+" title="Please enter a valid name (letters only, no numbers)." maxlength="30">
                             </div>
                             <div class="form-group">
                                 <label for="email">Your Email *</label>
-                                <input type="email" id="email" name="email" required placeholder="romeobojajr@gmail.com" aria-required="true" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" title="Please enter a valid email address" maxlength="100">
-                                <small class="field-error" id="emailError">Please enter a valid email address.</small>
+                                <input type="email" id="email" name="email" required placeholder="romeobojajr@gmail.com" aria-required="true" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" title="Please enter a valid email address." maxlength="100">
                             </div>
                             
                             <div class="form-group">
@@ -1146,14 +1208,12 @@
                                     <option value="Virtual Assistance">Virtual Assistance</option>
                                     <option value="Technical Support">Technical Support</option>
                                 </select>
-                                <small class="field-error" id="serviceError">Please select a service from the dropdown.</small>
                             </div>
 
                             <div class="form-group">
                                 <label for="message">Message *</label>
-                                <textarea id="message" name="message" required placeholder="Tell me about your project..." aria-required="true" maxlength="1000"></textarea>
+                                <textarea id="message" name="message" required placeholder="Tell me about your project..." aria-required="true" minlength="10" maxlength="1000" title="Message must be at least 10 characters long."></textarea>
                                 <small class="char-count" id="charCount">0 / 1000</small>
-                                <small class="field-error" id="messageError">Message must be at least 10 characters long.</small>
                             </div>
                             <button type="submit" id="submitBtn" class="form-btn magnetic-btn">
                                 <span class="btn-text"><i class="fas fa-paper-plane"></i> Send Message</span>
@@ -1197,6 +1257,18 @@
                 link.href = 'mai' + 'lto:' + email;
                 const display = link.querySelector('#emailDisplay');
                 if (display) { display.textContent = email; }
+            });
+            
+            const eyeIcons = document.querySelectorAll('.portfolio-overlay i');
+            eyeIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', function() {
+                    const thumbnail = this.closest('.portfolio-thumbnail');
+                    if (thumbnail) thumbnail.classList.add('blurred');
+                });
+                icon.addEventListener('mouseleave', function() {
+                    const thumbnail = this.closest('.portfolio-thumbnail');
+                    if (thumbnail) thumbnail.classList.remove('blurred');
+                });
             });
         });
 
@@ -1347,6 +1419,7 @@
         portfolioItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 if (e.target.closest('.swiper-button-next') || e.target.closest('.swiper-button-prev')) return;
+                
                 document.getElementById('modalTitle').textContent = item.getAttribute('data-title');
                 document.getElementById('modalDescription').textContent = item.getAttribute('data-description');
                 document.getElementById('modalTools').textContent = item.getAttribute('data-tools');
@@ -1437,9 +1510,6 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.service-card, .project-card, .portfolio-item, .review-card').forEach(el => { staggerObserver.observe(el); });
 
-        // Bulletproof function to equalize project card heights initially
-        // It temporarily collapses all cards to measure the true baseline, applies it as min-height,
-        // and then restores their state. This ensures expanding one card never forces others to stretch.
         function equalizeProjectCards() {
             const cards = document.querySelectorAll('.project-card');
             if (cards.length === 0) return;
@@ -1447,7 +1517,6 @@
             const lists = document.querySelectorAll('.project-card .experience-list');
             const tags = document.querySelectorAll('.project-card .project-tags');
             
-            // Save current states and temporarily collapse all to measure baseline
             const states = [];
             lists.forEach((list, index) => {
                 const isHidden = list.classList.contains('hidden');
@@ -1458,7 +1527,6 @@
                 }
             });
             
-            // Reset min-height to measure natural collapsed height
             cards.forEach(card => card.style.minHeight = 'auto');
             
             let maxHeight = 0;
@@ -1469,10 +1537,8 @@
                 }
             });
             
-            // Apply uniform min-height
             cards.forEach(card => card.style.minHeight = maxHeight + 'px');
             
-            // Restore previous states
             lists.forEach((list, index) => {
                 if (!states[index]) {
                     list.classList.remove('hidden');
@@ -1489,9 +1555,8 @@
             allToggleButtons.forEach(function(toggleBtn) {
                 toggleBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    e.stopPropagation(); // Strictly prevent event bubbling
+                    e.stopPropagation();
                     
-                    // Strictly target ONLY this button's parent card
                     const parentCard = this.closest('.project-card');
                     if (!parentCard) return;
                     
@@ -1503,11 +1568,13 @@
                         if (isHidden) {
                             listElement.classList.remove('hidden');
                             tagsElement.classList.remove('hidden');
-                            this.textContent = 'Show less...';
+                            this.innerHTML = 'Hide Responsibilities <span class="toggle-arrow">›</span>';
+                            this.classList.add('active');
                         } else {
                             listElement.classList.add('hidden');
                             tagsElement.classList.add('hidden');
-                            this.textContent = 'See more...';
+                            this.innerHTML = 'Show Responsibilities <span class="toggle-arrow">›</span>';
+                            this.classList.remove('active');
                         }
                     }
                 });
@@ -1522,62 +1589,20 @@
         const closeSuccessModalBtn = document.getElementById('closeSuccessModal');
         const messageInput = document.getElementById('message');
         const charCount = document.getElementById('charCount');
-        const nameRegex = /^[A-Za-z\s'-]{2,50}$/;
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         if (contactForm) {
-            contactForm.setAttribute('novalidate', 'novalidate');
-            contactForm.addEventListener('input', function(e) {
-                const target = e.target;
-                const errorEl = document.getElementById(target.id + 'Error');
-                if (errorEl) errorEl.style.display = 'none';
-                if (formStatus.style.display === 'block') { formStatus.style.display = 'none'; formStatus.className = 'form-status'; }
-            });
-            contactForm.addEventListener('change', function(e) {
-                if (e.target.tagName === 'SELECT') {
-                    const errorEl = document.getElementById(e.target.id + 'Error');
-                    if (errorEl) errorEl.style.display = 'none';
-                }
-            });
             messageInput.addEventListener('input', function() {
                 const currentLength = this.value.length;
                 charCount.textContent = `${currentLength} / 1000`;
                 charCount.className = 'char-count';
                 if (currentLength > 900) charCount.classList.add('danger');
                 else if (currentLength > 750) charCount.classList.add('warning');
-                const messageErrorEl = document.getElementById('messageError');
-                if (messageErrorEl) messageErrorEl.style.display = 'none';
             });
+            
             contactForm.addEventListener('submit', async function(e) {
+                // Prevent default form submission so the page doesn't reload and the success modal can show
                 e.preventDefault();
-                const nameInput = document.getElementById('name');
-                const emailInput = document.getElementById('email');
-                const serviceInput = document.getElementById('service');
-                let isValid = true; let firstInvalidField = null;
-                const validateField = (input, isInvalid, errorId) => {
-                    const errorEl = document.getElementById(errorId);
-                    if (isInvalid) {
-                        if (errorEl) errorEl.style.display = 'block';
-                        if (!firstInvalidField) firstInvalidField = input;
-                        return false;
-                    } else { if (errorEl) errorEl.style.display = 'none'; return true; }
-                };
-                if (!validateField(nameInput, !nameRegex.test(nameInput.value.trim()), 'nameError')) isValid = false;
-                if (!validateField(emailInput, !emailRegex.test(emailInput.value.trim()), 'emailError')) isValid = false;
-                if (!validateField(serviceInput, serviceInput.value === '', 'serviceError')) isValid = false;
-                if (!validateField(messageInput, messageInput.value.trim().length < 10, 'messageError')) isValid = false;
-                if (!isValid) {
-                    if (firstInvalidField) { firstInvalidField.focus(); firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-                    
-                    // Trigger shake and red color on submit button
-                    submitBtn.style.transform = ''; // Clear magnetic effect inline transform
-                    submitBtn.classList.add('validation-fail');
-                    setTimeout(() => {
-                        submitBtn.classList.remove('validation-fail');
-                    }, 500);
-                    
-                    return;
-                }
+                
                 if (submitBtn.disabled) return;
                 
                 submitBtn.disabled = true;
