@@ -155,7 +155,7 @@ section { padding: 100px 30px; }
 .section-divider { width: 60px; height: 3px; background: var(--gold); margin: 20px auto; }
 .about { background: var(--bg-secondary); }
 
-/* === FIXED: ABOUT SECTION LAYOUT === */
+/* === ABOUT SECTION LAYOUT === */
 .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
 .about-image {
   position: sticky;
@@ -283,7 +283,7 @@ transition: filter 0.3s ease;
 .portfolio-thumbnail video.portfolio-img[src]:not([src=""]) ~ .portfolio-icon, .portfolio-thumbnail img.portfolio-img[src]:not([src=""]) ~ .portfolio-icon { display: none; }
 .portfolio-thumbnail .portfolio-icon { font-size: 3rem; color: var(--gold); opacity: 0.5; position: relative; z-index: 0; }
 .portfolio-item[data-category="photo"] .portfolio-thumbnail.photo-slider-container { aspect-ratio: auto; height: auto; min-height: 280px; overflow: hidden; }
-.photo-swiper { width: 100%; height: 100%; min-height: 280px; }
+.photo-swiper { width: 100%; height: 100%; min-height: 280px; position: relative; z-index: 5; }
 .photo-swiper .swiper-slide { display: flex; align-items: center; justify-content: center; background: var(--bg-card-hover); overflow: hidden; }
 .photo-swiper .swiper-slide img.slider-photo {
 width: 100%; height: auto; max-height: 350px; object-fit: contain; display: block;
@@ -291,9 +291,38 @@ transition: filter 0.3s ease;
 }
 .photo-swiper .swiper-slide img.slider-photo:hover,
 .portfolio-thumbnail.blurred .photo-swiper .swiper-slide img.slider-photo { filter: blur(4px); }
-.photo-swiper .swiper-button-next, .photo-swiper .swiper-button-prev { color: var(--gold); background: rgba(0, 0, 0, 0.4); width: 28px; height: 28px; border-radius: 50%; transition: all 0.3s ease; backdrop-filter: blur(4px); z-index: 3; }
-.photo-swiper .swiper-button-next:hover, .photo-swiper .swiper-button-prev:hover { background: var(--gold); color: #000; transform: scale(1.1); }
-.photo-swiper .swiper-button-next::after, .photo-swiper .swiper-button-prev::after { font-size: 14px; font-weight: bold; }
+
+/* === FIXED: SWIPER NAVIGATION BUTTONS FOR MOBILE & DESKTOP === */
+.photo-swiper .swiper-button-next, .photo-swiper .swiper-button-prev { 
+  color: var(--gold); 
+  background: rgba(0, 0, 0, 0.4); 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  transition: all 0.3s ease; 
+  backdrop-filter: blur(4px); 
+  z-index: 50 !important; 
+  pointer-events: auto !important;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.photo-swiper .swiper-button-next { right: 10px; }
+.photo-swiper .swiper-button-prev { left: 10px; }
+.photo-swiper .swiper-button-next:hover, .photo-swiper .swiper-button-prev:hover { 
+  background: var(--gold); 
+  color: #000; 
+  transform: translateY(-50%) scale(1.1); 
+}
+.photo-swiper .swiper-button-next::after, .photo-swiper .swiper-button-prev::after { 
+  font-size: 14px; 
+  font-weight: bold; 
+}
+.photo-swiper .swiper-button-next svg, .photo-swiper .swiper-button-prev svg { 
+  width: 14px; 
+  height: 14px; 
+  fill: currentColor; 
+}
+
 .portfolio-overlay {
 position: absolute;
 inset: 0;
@@ -302,20 +331,18 @@ align-items: center;
 justify-content: center;
 opacity: 0;
 transition: opacity 0.3s ease;
-pointer-events: none;
+pointer-events: none !important; /* CRITICAL: ensures it never blocks clicks on swiper buttons */
 z-index: 2;
 background: rgba(0, 0, 0, 0.35);
 }
-.portfolio-thumbnail:hover .portfolio-overlay { opacity: 1; }
 .portfolio-overlay i {
-pointer-events: auto;
+pointer-events: auto !important;
 cursor: pointer;
 color: var(--gold);
 font-size: 2.5rem;
 text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
 transition: transform 0.3s ease, color 0.3s ease;
 }
-.portfolio-overlay i:hover { transform: scale(1.15); color: var(--gold-light); }
 .portfolio-info { padding: 25px; }
 .portfolio-info h3 { font-size: 1.2rem; margin-bottom: 8px; font-weight: 600; color: var(--text-heading); }
 .portfolio-info p { color: var(--text-secondary); font-size: 0.85rem; }
@@ -540,11 +567,17 @@ transition: all 0.3s ease; z-index: 999;
 position: fixed;
 bottom: 90px;
 right: 30px;
-display: none; /* HIDDEN ON DESKTOP */
+display: none;
 flex-direction: column;
 gap: 12px;
 z-index: 998;
 }
+
+/* === EXPANDING CONTACT BUTTON - HIDDEN ON DESKTOP === */
+.floating-contact-wrapper {
+display: none;
+}
+
 .chat-btn {
 width: 50px; height: 50px;
 border-radius: 50%;
@@ -659,7 +692,6 @@ transform: rotate(90deg);
 .dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; background: transparent; border: none; box-shadow: none; padding: 5px 0; margin-top: 5px; display: none; min-width: auto; }
 .dropdown-menu::before { display: none; }
 .nav-links > li.dropdown-open .dropdown-menu { display: block; }
-/* FIXED: Hero section mobile improvements */
 .hero {
 padding: 140px 20px 80px;
 min-height: auto;
@@ -681,56 +713,253 @@ width: 100%;
 width: 100%;
 justify-content: center;
 }
-/* FIXED: About section mobile reset */
 .about-image { position: static; top: auto; }
 .about-content, .contact-content { grid-template-columns: 1fr; gap: 40px; }
 .portfolio-grid, .services-grid, .projects-grid, .reviews-grid { grid-template-columns: 1fr; }
 .skills-grid { grid-template-columns: 1fr; }
 .modal-details { grid-template-columns: 1fr; }
-/* FIXED: Modal mobile improvements */
+
+/* === MODAL MOBILE - FULL SCREEN IMAGE WITH DETAILS BELOW === */
+.modal { padding: 0; align-items: flex-start; }
 .modal-close {
 top: 15px;
 right: 15px;
-width: 35px;
-height: 35px;
-font-size: 1rem;
+width: 40px;
+height: 40px;
+font-size: 1.1rem;
 z-index: 100;
-background: var(--bg-card);
-}
-.modal-body {
-padding: 60px 25px 25px;
+background: rgba(0,0,0,0.6);
+color: #fff;
+border: 1px solid rgba(255,255,255,0.2);
 }
 .modal-content {
-margin: 15px;
-max-height: 95vh;
+margin: 0;
+max-height: 100vh;
+border-radius: 0;
+overflow-y: auto;
+width: 100%;
+max-width: 100%;
 }
-.modal-body h2 { font-size: 1.5rem; }
-.review-modal-profile, .review-modal-placeholder { width: 120px; height: 120px; font-size: 2.5rem; }
+.modal-body {
+padding: 25px 20px 30px;
+}
+.modal-body h2 { font-size: 1.5rem; margin-bottom: 15px; }
+.modal-body p { font-size: 0.95rem; line-height: 1.7; margin-bottom: 15px; }
+.modal-image {
+aspect-ratio: auto;
+border-radius: 0;
+width: 100%;
+height: auto;
+max-height: 50vh;
+flex-shrink: 0;
+}
+.modal-image img, .modal-image video.modal-video {
+position: relative;
+width: 100%;
+height: auto;
+max-height: 50vh;
+object-fit: contain;
+}
+.modal-content.fullsize-mode {
+flex-direction: column;
+max-height: 100vh;
+max-width: 100%;
+overflow-y: auto;
+}
+.modal-content.fullsize-mode .modal-image {
+border-radius: 0;
+max-height: 50vh;
+flex: none;
+width: 100%;
+}
+.modal-content.fullsize-mode .modal-image img {
+max-height: 50vh;
+width: 100%;
+}
+.modal-content.fullsize-mode .modal-body {
+max-width: 100%;
+padding: 25px 20px 30px;
+flex: none;
+overflow-y: visible;
+}
+.review-modal-content { max-width: 100%; border-radius: 0; }
+.review-modal-profile, .review-modal-placeholder { width: 100px; height: 100px; font-size: 2rem; margin: 30px auto 15px; }
+.review-modal-body { padding: 15px 20px 30px; }
+.review-modal-text { font-size: 0.95rem; line-height: 1.7; }
+.review-modal-name { font-size: 1.3rem; }
+
+/* === FOOTER MOBILE === */
+footer {
+padding: 20px 20px 15px;
+}
+.footer-social {
+margin-bottom: 12px;
+gap: 15px;
+}
+.footer-social a {
+width: 40px;
+height: 40px;
+}
+footer p {
+font-size: 0.8rem;
+}
+
+/* === FIXED: MOBILE SWIPER BUTTONS LARGER TOUCH TARGET === */
+.photo-swiper .swiper-button-next, .photo-swiper .swiper-button-prev {
+  width: 40px;
+  height: 40px;
+}
+.photo-swiper .swiper-button-next { right: 8px; }
+.photo-swiper .swiper-button-prev { left: 8px; }
+
+/* === EXPANDING CONTACT BUTTON - MOBILE ONLY WITH BREATHING ANIMATION === */
+.floating-contact-wrapper {
+display: flex;
+position: fixed;
+bottom: 90px;
+right: 15px;
+z-index: 998;
+flex-direction: column;
+align-items: flex-end;
+gap: 12px;
+}
+.contact-main-btn {
+width: 54px;
+height: 54px;
+border-radius: 50%;
+background: var(--gold);
+color: #000;
+border: none;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.4rem;
+cursor: pointer;
+box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+z-index: 10;
+position: relative;
+animation: breatheFloat 3s ease-in-out infinite;
+}
+@keyframes breatheFloat {
+0%, 100% {
+transform: scale(1);
+box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4), 0 0 0 0 rgba(212, 175, 55, 0.4);
+}
+50% {
+transform: scale(1.05);
+box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6), 0 0 0 12px rgba(212, 175, 55, 0);
+}
+}
+.contact-main-btn:hover {
+animation-play-state: paused;
+transform: scale(1.1);
+box-shadow: 0 6px 25px rgba(212, 175, 55, 0.6);
+}
+.contact-main-btn i {
+position: relative;
+z-index: 2;
+transition: transform 0.4s ease;
+}
+.contact-main-btn.active {
+animation: none;
+transform: rotate(135deg);
+box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+.contact-main-btn.active:hover {
+transform: rotate(135deg) scale(1.1);
+}
+.contact-options {
+display: flex;
+flex-direction: column;
+gap: 12px;
+align-items: flex-end;
+opacity: 0;
+visibility: hidden;
+transform: translateY(30px) scale(0.5);
+transform-origin: bottom right;
+transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+margin-bottom: 5px;
+}
+.contact-options.active {
+opacity: 1;
+visibility: visible;
+transform: translateY(0) scale(1);
+}
+.contact-option {
+width: 48px;
+height: 48px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+text-decoration: none;
+color: #fff;
+font-size: 1.2rem;
+transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+position: relative;
+transform: scale(0);
+}
+.contact-options.active .contact-option {
+transform: scale(1);
+}
+.contact-options.active .contact-option:nth-child(1) { transition-delay: 0.05s; }
+.contact-options.active .contact-option:nth-child(2) { transition-delay: 0.1s; }
+.contact-options.active .contact-option:nth-child(3) { transition-delay: 0.15s; }
+.contact-options.active .contact-option:nth-child(4) { transition-delay: 0.2s; }
+.contact-option:hover {
+transform: scale(1.2) !important;
+}
+.contact-option.whatsapp { background: #25D366; }
+.contact-option.viber { background: #7360F2; }
+.contact-option.messenger { background: #0084FF; }
+.contact-option.email { background: var(--gold); color: #000; }
+.contact-option .option-label {
+position: absolute;
+right: 58px;
+background: var(--bg-card);
+color: var(--text-primary);
+padding: 6px 12px;
+border-radius: 6px;
+font-size: 0.75rem;
+font-weight: 600;
+white-space: nowrap;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+pointer-events: none;
+border: 1px solid var(--border-color);
+box-shadow: 0 4px 12px var(--shadow);
+}
+.contact-option .option-label::after {
+content: '';
+position: absolute;
+right: -6px;
+top: 50%;
+transform: translateY(-50%);
+border-left: 6px solid var(--bg-card);
+border-top: 6px solid transparent;
+border-bottom: 6px solid transparent;
+}
+.contact-option:hover .option-label {
+opacity: 1;
+visibility: visible;
+right: 56px;
+}
+
+body {
+padding-bottom: 0;
+}
+
+.back-to-top {
+bottom: 20px;
+right: 15px;
+}
+
 .stat-item:not(:last-child)::after { display: none; }
 .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
 .stat-number { font-size: 2rem; }
-.modal-content.fullsize-mode { flex-direction: column-reverse; max-height: 90vh; }
-.modal-content.fullsize-mode .modal-body { max-width: 100%; padding: 25px; max-height: 40vh; }
-.modal-content.fullsize-mode .modal-image { border-radius: 20px 20px 0 0; max-height: 50vh; }
-
-/* === FLOATING CHAT BUTTONS - MOBILE (VISIBLE) === */
-.floating-chat {
-display: flex; /* SHOW ON MOBILE */
-bottom: 100px;
-right: 20px;
-gap: 10px;
-}
-.chat-btn {
-width: 45px; height: 45px;
-font-size: 1.2rem;
-}
-.chat-btn .chat-tooltip {
-display: none; /* Hide tooltips on mobile to save space */
-}
-/* Add padding to body on mobile to prevent chat buttons from blocking content */
-body {
-padding-bottom: 120px;
-}
 }
 </style>
 </head>
@@ -767,7 +996,6 @@ padding-bottom: 120px;
 </div>
 </nav>
 <main>
-<!-- Hero Section -->
 <section class="hero" id="home" aria-label="Introduction">
 <div class="hero-content">
 <div class="available-badge"><span class="status-dot"></span><span>Available for Hire</span></div>
@@ -784,7 +1012,6 @@ padding-bottom: 120px;
 <i class="fas fa-chevron-down"></i>
 </div>
 </section>
-<!-- Tech Stack Marquee -->
 <section class="tech-stack" aria-label="Technology Stack">
 <h2 class="tech-stack-title">Tools & Technologies I Work With</h2>
 <div class="marquee-wrapper">
@@ -818,7 +1045,6 @@ padding-bottom: 120px;
 </div>
 </div>
 </section>
-<!-- Stats Section -->
 <section class="stats" aria-label="Key Statistics">
 <div class="stats-grid">
 <div class="stat-item stagger-item"><div class="stat-number" data-target="7">0</div><div class="stat-label">Years Experience</div></div>
@@ -827,7 +1053,6 @@ padding-bottom: 120px;
 <div class="stat-item stagger-item"><div class="stat-number" data-target="100">0</div><div class="stat-label">Technical Issues Resolved</div></div>
 </div>
 </section>
-<!-- About Section -->
 <section class="about" id="about" aria-label="About Me">
 <div class="section-container">
 <div class="section-header fade-in">
@@ -861,7 +1086,6 @@ padding-bottom: 120px;
 </div>
 </div>
 </section>
-<!-- Featured IT Experience Section -->
 <section class="technical-projects" id="featured-experience" aria-label="Featured IT Experience">
 <div class="section-container">
 <div class="section-header fade-in">
@@ -1029,7 +1253,6 @@ padding-bottom: 120px;
 </div>
 </div>
 </section>
-<!-- Services Section -->
 <section class="services" id="services" aria-label="My Services">
 <div class="section-container">
 <div class="section-header fade-in">
@@ -1052,7 +1275,6 @@ padding-bottom: 120px;
 </div>
 </div>
 </section>
-<!-- Portfolio Section -->
 <section class="portfolio" id="portfolio" aria-label="My Portfolio">
 <div class="section-container">
 <div class="section-header fade-in">
@@ -1144,7 +1366,6 @@ padding-bottom: 120px;
 </div>
 </div>
 </section>
-<!-- Portfolio Modal -->
 <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
 <div class="modal-content" id="projectModalContent">
 <button class="modal-close" id="projectModalClose" aria-label="Close modal"><i class="fas fa-times"></i></button>
@@ -1166,7 +1387,6 @@ padding-bottom: 120px;
 </div>
 </div>
 </div>
-<!-- Reviews Section -->
 <section class="reviews" id="reviews" aria-label="Client Reviews">
 <div class="section-container">
 <div class="section-header fade-in">
@@ -1208,7 +1428,6 @@ padding-bottom: 120px;
 </div>
 </div>
 </section>
-<!-- Review Modal -->
 <div class="modal" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalName">
 <div class="modal-content review-modal-content">
 <button class="modal-close" id="reviewModalClose" aria-label="Close modal"><i class="fas fa-times"></i></button>
@@ -1223,7 +1442,6 @@ padding-bottom: 120px;
 </div>
 </div>
 </div>
-<!-- Contact Section -->
 <section class="contact" id="contact" aria-label="Contact Me">
 <div class="section-container">
 <div class="section-header fade-in">
@@ -1281,7 +1499,7 @@ padding-bottom: 120px;
 <small class="char-count" id="charCount">0 / 1000</small>
 </div>
 <button type="submit" id="submitBtn" class="form-btn">
-<span class="btn-text"><i class="fas fa-paper-plane"></i> Send Message</button>
+<span class="btn-text"><i class="fas fa-paper-plane"></i> Send Message</span>
 </button>
 </form>
 </div>
@@ -1298,20 +1516,29 @@ padding-bottom: 120px;
 <p>&copy; 2026 <span>Romeo O. Boja Jr.</span> | All Rights Reserved</p>
 </footer>
 <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
-<!-- Floating Chat Buttons -->
-<div class="floating-chat" aria-label="Quick contact options">
-<a href="https://wa.me/639947115643" target="_blank" rel="noopener noreferrer" class="chat-btn whatsapp" aria-label="Chat on WhatsApp">
+<!-- EXPANDING CONTACT BUTTON - MOBILE ONLY -->
+<div class="floating-contact-wrapper" id="floatingContactWrapper">
+<div class="contact-options" id="contactOptions">
+<a href="https://wa.me/639947115643" target="_blank" rel="noopener noreferrer" class="contact-option whatsapp" aria-label="Chat on WhatsApp">
 <i class="fab fa-whatsapp"></i>
-<span class="chat-tooltip">WhatsApp</span>
+<span class="option-label">WhatsApp</span>
 </a>
-<a href="viber://chat?number=639947115643" class="chat-btn viber" aria-label="Chat on Viber">
+<a href="viber://chat?number=639947115643" class="contact-option viber" aria-label="Chat on Viber">
 <i class="fab fa-viber"></i>
-<span class="chat-tooltip">Viber</span>
+<span class="option-label">Viber</span>
 </a>
-<a href="https://m.me/ViralBrainStudio" target="_blank" rel="noopener noreferrer" class="chat-btn messenger" aria-label="Chat on Messenger">
+<a href="https://m.me/ViralBrainStudio" target="_blank" rel="noopener noreferrer" class="contact-option messenger" aria-label="Chat on Messenger">
 <i class="fab fa-facebook-messenger"></i>
-<span class="chat-tooltip">Messenger</span>
+<span class="option-label">Messenger</span>
 </a>
+<a href="mailto:romeobojajr@gmail.com" class="contact-option email" aria-label="Send Email">
+<i class="fas fa-envelope"></i>
+<span class="option-label">Email</span>
+</a>
+</div>
+<button class="contact-main-btn" id="contactMainBtn" aria-label="Toggle contact options">
+<i class="fas fa-comment-dots" id="contactIcon"></i>
+</button>
 </div>
 <div class="success-modal-overlay" id="successModal" role="dialog" aria-modal="true" aria-labelledby="successModalTitle">
 <div class="success-modal-content">
@@ -1340,7 +1567,6 @@ link.href = 'mai' + 'lto:' + email;
 const display = link.querySelector('#emailDisplay');
 if (display) { display.textContent = email; }
 });
-// Auto-play portfolio videos and pause on hover
 const portfolioThumbnails = document.querySelectorAll('.portfolio-thumbnail');
 portfolioThumbnails.forEach(thumbnail => {
 const video = thumbnail.querySelector('video.portfolio-img');
@@ -1349,16 +1575,9 @@ video.muted = true;
 video.loop = true;
 video.playsInline = true;
 video.autoplay = true;
-// Attempt to play immediately to ensure autoplay works
 video.play().catch(() => {});
-// Pause on hover
-thumbnail.addEventListener('mouseenter', () => {
-video.pause();
-});
-// Resume playing when cursor leaves
-thumbnail.addEventListener('mouseleave', () => {
-video.play().catch(() => {});
-});
+thumbnail.addEventListener('mouseenter', () => { video.pause(); });
+thumbnail.addEventListener('mouseleave', () => { video.play().catch(() => {}); });
 }
 });
 const eyeIcons = document.querySelectorAll('.portfolio-overlay i');
@@ -1372,24 +1591,49 @@ const thumbnail = this.closest('.portfolio-thumbnail');
 if (thumbnail) thumbnail.classList.remove('blurred');
 });
 });
-// UPDATED: Chat buttons pause breathing animation on hover individually
-const chatBtns = document.querySelectorAll('.chat-btn');
-chatBtns.forEach(btn => {
-const pseudoElement = btn.querySelector('::before') || btn;
-btn.addEventListener('mouseenter', function() {
-this.style.animationPlayState = 'paused';
-if (this.querySelector('::before')) {
-this.querySelector('::before').style.animationPlayState = 'paused';
+
+// === EXPANDING CONTACT BUTTON ===
+const contactMainBtn = document.getElementById('contactMainBtn');
+const contactOptions = document.getElementById('contactOptions');
+const contactIcon = document.getElementById('contactIcon');
+let isContactOpen = false;
+
+contactMainBtn.addEventListener('click', function(e) {
+e.stopPropagation();
+isContactOpen = !isContactOpen;
+if (isContactOpen) {
+contactOptions.classList.add('active');
+contactMainBtn.classList.add('active');
+contactIcon.classList.remove('fa-comment-dots');
+contactIcon.classList.add('fa-times');
+} else {
+contactOptions.classList.remove('active');
+contactMainBtn.classList.remove('active');
+contactIcon.classList.remove('fa-times');
+contactIcon.classList.add('fa-comment-dots');
 }
 });
-btn.addEventListener('mouseleave', function() {
-this.style.animationPlayState = 'running';
-if (this.querySelector('::before')) {
-this.querySelector('::before').style.animationPlayState = 'running';
+
+document.addEventListener('click', function(e) {
+if (isContactOpen && !e.target.closest('.floating-contact-wrapper')) {
+isContactOpen = false;
+contactOptions.classList.remove('active');
+contactMainBtn.classList.remove('active');
+contactIcon.classList.remove('fa-times');
+contactIcon.classList.add('fa-comment-dots');
 }
 });
+
+document.querySelectorAll('.contact-option').forEach(option => {
+option.addEventListener('click', function() {
+isContactOpen = false;
+contactOptions.classList.remove('active');
+contactMainBtn.classList.remove('active');
+contactIcon.classList.remove('fa-times');
+contactIcon.classList.add('fa-comment-dots');
 });
 });
+
 const scrollProgress = document.getElementById('scrollProgress');
 window.addEventListener('scroll', () => {
 const scrollTop = window.scrollY;
@@ -1397,6 +1641,7 @@ const docHeight = document.documentElement.scrollHeight - window.innerHeight;
 const scrollPercent = (scrollTop / docHeight) * 100;
 scrollProgress.style.width = scrollPercent + '%';
 }, { passive: true });
+
 const scrollIndicator = document.getElementById('scrollIndicator');
 if (scrollIndicator) {
 scrollIndicator.addEventListener('click', () => {
@@ -1404,6 +1649,7 @@ const techStackSection = document.querySelector('.tech-stack');
 if (techStackSection) { techStackSection.scrollIntoView({ behavior: 'smooth' }); }
 });
 }
+
 const typingTexts = ['IT Support Specialist', 'Virtual Assistant', 'Photo Editor', 'Video Editor', 'Digital Creator'];
 const typingElement = document.getElementById('typingText');
 let textIndex = 0, charIndex = 0, isDeleting = false, typingSpeed = 100;
@@ -1416,6 +1662,7 @@ else if (isDeleting && charIndex === 0) { isDeleting = false; textIndex = (textI
 setTimeout(typeText, typingSpeed);
 }
 setTimeout(typeText, 1000);
+
 const statNumbers = document.querySelectorAll('.stat-number');
 let countersStarted = false;
 function animateCounters() {
@@ -1430,6 +1677,7 @@ else { stat.textContent = target + '+'; }
 updateCounter();
 });
 }
+
 const themeToggle = document.getElementById('themeToggle');
 const themeIcon = themeToggle.querySelector('i');
 const html = document.documentElement;
@@ -1443,12 +1691,14 @@ html.setAttribute('data-theme', newTheme);
 localStorage.setItem('theme', newTheme);
 themeIcon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
 });
+
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
 const mobileMenuClose = document.getElementById('mobileMenuClose');
 hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
 hamburger.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navLinks.classList.toggle('active'); } });
 mobileMenuClose.addEventListener('click', () => navLinks.classList.remove('active'));
+
 const portfolioArrow = document.getElementById('portfolioArrow');
 const portfolioLi = document.querySelector('.nav-links .dropdown');
 if (portfolioArrow && portfolioLi) {
@@ -1460,6 +1710,7 @@ document.addEventListener('click', (e) => {
 if (!portfolioLi.contains(e.target)) { portfolioLi.classList.remove('dropdown-open'); }
 });
 }
+
 document.querySelectorAll('.nav-links a').forEach(link => {
 link.addEventListener('click', (e) => {
 if (link.classList.contains('dropdown-filter')) {
@@ -1481,6 +1732,7 @@ e.preventDefault(); link.parentElement.classList.toggle('dropdown-open'); return
 navLinks.classList.remove('active');
 });
 });
+
 const navbar = document.getElementById('navbar');
 const backToTop = document.getElementById('backToTop');
 window.addEventListener('scroll', () => {
@@ -1488,6 +1740,7 @@ navbar.classList.toggle('scrolled', window.scrollY > 50);
 backToTop.classList.toggle('visible', window.scrollY > 400);
 }, { passive: true });
 backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
 const tabBtns = document.querySelectorAll('.tab-btn');
 const portfolioItems = document.querySelectorAll('.portfolio-item');
 tabBtns.forEach(btn => btn.addEventListener('click', () => {
@@ -1499,19 +1752,33 @@ if (match) { item.classList.remove('hidden'); setTimeout(() => { item.style.opac
 else { item.style.opacity = '0'; item.style.transform = 'translateY(20px)'; setTimeout(() => item.classList.add('hidden'), 300); }
 });
 }));
+
+// === FIXED: SWIPER INITIALIZATION WITH OBSERVER FOR MOBILE COMPATIBILITY ===
 document.querySelectorAll('.photo-swiper').forEach((swiperEl) => {
-new Swiper(swiperEl, {
-loop: true, effect: 'fade', fadeEffect: { crossFade: true }, speed: 500,
-navigation: { nextEl: swiperEl.querySelector('.swiper-button-next'), prevEl: swiperEl.querySelector('.swiper-button-prev') },
-preventClicks: false, preventClicksPropagation: false
+  new Swiper(swiperEl, {
+    loop: true, 
+    effect: 'fade', 
+    fadeEffect: { crossFade: true }, 
+    speed: 500,
+    navigation: { 
+      nextEl: swiperEl.querySelector('.swiper-button-next'), 
+      prevEl: swiperEl.querySelector('.swiper-button-prev') 
+    },
+    preventClicks: false, 
+    preventClicksPropagation: false,
+    observer: true,
+    observeParents: true,
+    touchRatio: 1,
+    simulateTouch: true
+  });
 });
-});
+
 const projectModal = document.getElementById('projectModal');
 const projectModalContent = document.getElementById('projectModalContent');
 const projectModalClose = document.getElementById('projectModalClose');
 portfolioItems.forEach(item => {
 item.addEventListener('click', (e) => {
-if (e.target.closest('.swiper-button-next') || e.target.closest('.swiper-button-prev')) return;
+if (e.target.closest('.swiper-button-next') || e.target.closest('.swiper-button-prev') || e.target.closest('.swiper-pagination')) return;
 const category = item.getAttribute('data-category');
 const activeSlide = item.querySelector('.swiper-slide-active');
 const activeImg = activeSlide ? activeSlide.querySelector('.slider-photo') : null;
@@ -1545,6 +1812,7 @@ projectModal.classList.add('active');
 document.body.style.overflow = 'hidden';
 });
 });
+
 function closeProjectModal() {
 projectModal.classList.remove('active');
 projectModalContent.classList.remove('fullsize-mode');
@@ -1554,6 +1822,7 @@ document.body.style.overflow = '';
 }
 projectModalClose.addEventListener('click', closeProjectModal);
 projectModal.addEventListener('click', (e) => { if (e.target === projectModal) closeProjectModal(); });
+
 const reviewModal = document.getElementById('reviewModal');
 const reviewModalClose = document.getElementById('reviewModalClose');
 const reviewCards = document.querySelectorAll('.review-card');
@@ -1572,9 +1841,11 @@ reviewModal.classList.add('active');
 document.body.style.overflow = 'hidden';
 });
 });
+
 function closeReviewModal() { reviewModal.classList.remove('active'); document.body.style.overflow = ''; }
 reviewModalClose.addEventListener('click', closeReviewModal);
 reviewModal.addEventListener('click', (e) => { if (e.target === reviewModal) closeReviewModal(); });
+
 document.addEventListener('keydown', (e) => {
 if (e.key === 'Escape') {
 if (projectModal.classList.contains('active')) closeProjectModal();
@@ -1584,6 +1855,7 @@ if (navLinks.classList.contains('active')) navLinks.classList.remove('active');
 if (portfolioLi) portfolioLi.classList.remove('dropdown-open');
 }
 });
+
 const observer = new IntersectionObserver((entries) => {
 entries.forEach(entry => {
 if (entry.isIntersecting) {
@@ -1594,12 +1866,14 @@ if (entry.target.classList.contains('stat-item') && !countersStarted) { counters
 });
 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 document.querySelectorAll('.fade-in, .stagger-item').forEach(el => observer.observe(el));
+
 const staggerObserver = new IntersectionObserver((entries) => {
 entries.forEach((entry, index) => {
 if (entry.isIntersecting) { setTimeout(() => { entry.target.classList.add('visible'); }, index * 100); }
 });
 }, { threshold: 0.1 });
 document.querySelectorAll('.service-card, .project-card, .portfolio-item, .review-card').forEach(el => { staggerObserver.observe(el); });
+
 function equalizeProjectCards() {
 const cards = document.querySelectorAll('.project-card');
 if (cards.length === 0) return;
@@ -1634,7 +1908,7 @@ window.addEventListener('resize', () => {
 clearTimeout(resizeTimer);
 resizeTimer = setTimeout(equalizeProjectCards, 150);
 });
-document.addEventListener('DOMContentLoaded', function() {
+
 const allToggleButtons = document.querySelectorAll('.responsibilities-toggle');
 allToggleButtons.forEach(function(toggleBtn) {
 toggleBtn.addEventListener('click', function(e) {
@@ -1660,7 +1934,7 @@ this.classList.remove('active');
 }
 });
 });
-});
+
 const contactForm = document.getElementById('contactForm');
 const submitBtn = document.getElementById('submitBtn');
 const btnText = document.querySelector('.btn-text');
@@ -1669,6 +1943,7 @@ const successModal = document.getElementById('successModal');
 const closeSuccessModalBtn = document.getElementById('closeSuccessModal');
 const messageInput = document.getElementById('message');
 const charCount = document.getElementById('charCount');
+
 if (contactForm) {
 messageInput.addEventListener('input', function() {
 const currentLength = this.value.length;
@@ -1677,6 +1952,7 @@ charCount.className = 'char-count';
 if (currentLength > 900) charCount.classList.add('danger');
 else if (currentLength > 750) charCount.classList.add('warning');
 });
+
 contactForm.addEventListener('submit', async function(e) {
 if (!contactForm.checkValidity()) {
 contactForm.reportValidity();
@@ -1684,9 +1960,11 @@ return;
 }
 e.preventDefault();
 if (submitBtn.disabled) return;
+
 submitBtn.disabled = true;
 btnText.innerHTML = '<div class="btn-loading"><span class="premium-spinner"></span><span>Sending...</span></div>';
 formStatus.style.display = 'none';
+
 const formData = new FormData(contactForm);
 const templateParams = {
 name: formData.get('name'),
@@ -1694,6 +1972,7 @@ email: formData.get('email'),
 service: formData.get('service'),
 message: formData.get('message')
 };
+
 try {
 await emailjs.send('service_romeoboja', 'template_3mxy9yk', templateParams);
 await emailjs.send('service_romeoboja', 'template_ka7330n', templateParams);
@@ -1712,9 +1991,11 @@ submitBtn.disabled = false;
 btnText.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
 }
 });
+
 closeSuccessModalBtn.addEventListener('click', () => { successModal.classList.remove('active'); });
 successModal.addEventListener('click', (e) => { if (e.target === successModal) { successModal.classList.remove('active'); } });
 }
+});
 </script>
 </body>
 </html>
